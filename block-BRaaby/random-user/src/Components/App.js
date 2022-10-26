@@ -6,10 +6,15 @@ class App extends React.Component {
     this.state = {
       user: '',
       activeInfo: '',
-      // loading: true,
+      loading: false,
     };
   }
   componentDidMount() {
+    this.setState({
+      user: this.state.user,
+      activeInfo: this.state.activeInfo,
+      loading: true,
+    });
     fetch('https://randomuser.me/api/')
       .then((res) => res.json())
       .then((data) =>
@@ -20,9 +25,14 @@ class App extends React.Component {
             data.results[0].name.first +
             ' ' +
             data.results[0].name.last,
-          // loading: false,
+          loading: false,
         })
       );
+    this.setState({
+      user: this.state.user,
+      activeInfo: this.state.activeInfo,
+      loading: false,
+    });
   }
 
   handleHoverOverProfile = () => {
@@ -98,24 +108,30 @@ class App extends React.Component {
             className="border-2 border-solid border-grey w-40 rounded-full px-5 py-2 bg-black text-white"
             type="button"
             onClick={() => {
+              this.setState({
+                loading: true,
+              });
               fetch('https://randomuser.me/api/')
                 .then((res) => res.json())
                 .then((data) =>
                   this.setState({
                     user: data.results[0],
                     activeInfo:
+                      'my name is ' +
                       data.results[0].name.first +
                       ' ' +
                       data.results[0].name.last,
+                    loading: false,
                   })
                 );
             }}
           >
-            Random User
+            {this.state.loading ? 'Loading.....' : 'Random User'}
           </button>
         </div>
       );
     }
+    return <div className="loader"></div>;
   }
 }
 
