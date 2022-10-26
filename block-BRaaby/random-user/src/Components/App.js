@@ -131,7 +131,7 @@ class App extends React.Component {
         </div>
       );
     }
-    return <p>LOADING......</p>;
+    return <div className="loader"></div>;
   }
 }
 
